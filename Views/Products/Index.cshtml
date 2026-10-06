@@ -1,0 +1,158 @@
+@model IEnumerable<Tanjente_Midterm_Store.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+    <div class="text-center mb-5">
+
+        <h1 class="display-5 fw-bold">
+            🛍️ Our Products
+        </h1>
+
+        <p class="lead text-muted">
+            Find the perfect products for your setup.
+        </p>
+
+        <a asp-action="Create"
+           class="btn btn-dark px-4 mt-2">
+            + Add Product
+        </a>
+
+    </div>
+
+
+    @if (!Model.Any())
+    {
+        <!-- EMPTY STORE -->
+        <div class="alert alert-info text-center shadow-sm">
+
+            <h5 class="fw-bold">
+                No products available yet.
+            </h5>
+
+            <p class="mb-3">
+                Add your first product to get started.
+            </p>
+
+            <a asp-action="Create"
+               class="btn btn-dark">
+                + Add Product
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <!-- PRODUCT GRID -->
+        <div class="row g-4">
+
+            @foreach (var product in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+
+                    <!-- PRODUCT CARD -->
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+
+                        <div class="card-body p-4 d-flex flex-column">
+
+                            <!-- CATEGORY -->
+                            <div class="mb-3">
+
+                                <span class="badge rounded-pill bg-secondary px-3 py-2">
+                                    @product.Category
+                                </span>
+
+                            </div>
+
+
+                            <!-- PRODUCT NAME -->
+                            <h4 class="fw-bold mb-2">
+                                @product.Name
+                            </h4>
+
+
+                            <!-- DESCRIPTION -->
+                            <p class="text-muted mb-4">
+                                @product.Description
+                            </p>
+
+
+                            <!-- PRICE -->
+                            <div class="mt-auto">
+
+                                <h3 class="fw-bold mb-4">
+                                    ₱@product.Price.ToString("N2")
+                                </h3>
+
+
+                                <!-- ACTION BUTTONS -->
+                                <div class="d-flex flex-wrap gap-2">
+
+                                    <!-- DETAILS -->
+                                    <a asp-action="Details"
+                                       asp-route-id="@product.Id"
+                                       class="btn btn-outline-dark btn-sm">
+
+                                        Details
+
+                                    </a>
+
+
+                                    <!-- EDIT -->
+                                    <a asp-action="Edit"
+                                       asp-route-id="@product.Id"
+                                       class="btn btn-outline-primary btn-sm">
+
+                                        Edit
+
+                                    </a>
+
+
+                                    <!-- DELETE -->
+                                    <a asp-action="Delete"
+                                       asp-route-id="@product.Id"
+                                       class="btn btn-outline-danger btn-sm">
+
+                                        Delete
+
+                                    </a>
+
+
+                                    <!-- ADD TO CART -->
+                                    <form asp-controller="Cart"
+                                          asp-action="AddToCart"
+                                          method="post"
+                                          class="d-inline">
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@product.Id" />
+
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm">
+
+                                            🛒 Add to Cart
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

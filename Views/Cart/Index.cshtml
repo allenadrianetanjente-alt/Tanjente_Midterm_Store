@@ -1,0 +1,160 @@
+@model IEnumerable<Tanjente_Midterm_Store.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">🛒 Shopping Cart</h1>
+            <p class="text-muted mb-0">
+                Review the products you added to your cart.
+            </p>
+        </div>
+
+        <a asp-controller="Products"
+           asp-action="Index"
+           class="btn btn-outline-dark">
+            ← Continue Shopping
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <h5 class="fw-bold">Your cart is empty.</h5>
+
+            <p class="mb-3">
+                Add some products to your cart first.
+            </p>
+
+            <a asp-controller="Products"
+               asp-action="Index"
+               class="btn btn-dark">
+                Browse Products
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            @item.ProductName
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        ₱@item.Price.ToString("N2")
+                                    </td>
+
+                                    <td>
+
+                                        <div class="d-flex gap-2 flex-wrap">
+
+                                            <!-- UPDATE QUANTITY -->
+                                            <form asp-controller="Cart"
+                                                  asp-action="UpdateQuantity"
+                                                  method="post"
+                                                  class="d-flex gap-2">
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@item.Id" />
+
+                                                <input type="number"
+                                                       name="quantity"
+                                                       value="@item.Quantity"
+                                                       min="1"
+                                                       class="form-control"
+                                                       style="width: 90px;" />
+
+                                                <button type="submit"
+                                                        class="btn btn-primary btn-sm">
+                                                    Update
+                                                </button>
+
+                                            </form>
+
+                                            <!-- REMOVE ITEM -->
+                                            <form asp-controller="Cart"
+                                                  asp-action="Remove"
+                                                  method="post">
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@item.Id" />
+
+                                                <button type="submit"
+                                                        class="btn btn-danger btn-sm">
+                                                    Remove
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            ₱@((item.Price * item.Quantity).ToString("N2"))
+                                        </strong>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- GRAND TOTAL -->
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <h5 class="fw-bold mb-0">
+                        Grand Total
+                    </h5>
+
+                    <h4 class="fw-bold mb-0">
+                        ₱@Model.Sum(item => item.Price * item.Quantity).ToString("N2")
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

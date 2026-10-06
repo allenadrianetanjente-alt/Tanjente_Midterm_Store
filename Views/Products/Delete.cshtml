@@ -1,0 +1,70 @@
+@model Tanjente_Midterm_Store.Models.Product
+
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4 text-center">
+
+                    <div class="display-4 mb-3">
+                        🗑️
+                    </div>
+
+                    <h2 class="fw-bold">
+                        Delete Product?
+                    </h2>
+
+                    <p class="text-muted">
+                        Are you sure you want to delete this product?
+                    </p>
+
+                    <div class="bg-light rounded p-3 my-4">
+
+                        <h4 class="fw-bold">
+                            @Model.Name
+                        </h4>
+
+                        <p class="text-muted mb-1">
+                            @Model.Category
+                        </p>
+
+                        <h5 class="fw-bold">
+                            ₱@Model.Price.ToString("N2")
+                        </h5>
+
+                    </div>
+
+                    <form asp-action="Delete">
+
+                        <input type="hidden"
+                               asp-for="Id" />
+
+                        <button type="submit"
+                                class="btn btn-danger px-4">
+                            Yes, Delete
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
